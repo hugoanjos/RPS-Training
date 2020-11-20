@@ -11,18 +11,18 @@ struct ContentView: View {
     @State private var currentMove = Int.random(in: 0...2)
     @State private var winCondition = Bool.random()
     
-    private var moves = ["Rock", "Paper", "Scissors"]
+    private var moves = ["✊", "✋", "✌️"]
     
     var body: some View {
         
-        VStack(spacing: 150) {
+        VStack(spacing: 120) {
             VStack(spacing: 50) {
                 Text("Player Score: 0")
                 
                 VStack {
                     Text("The move is:")
                     Text(moves[currentMove])
-                        .font(.largeTitle)
+                        .font(.system(size: 60))
                         .fontWeight(.black)
                 }
                 
@@ -44,7 +44,7 @@ struct ContentView: View {
                     }) {
                         Text(self.moves[number])
                             .foregroundColor(.primary)
-                            .font(.largeTitle)
+                            .font(.system(size: 60))
                     }
                 }
             }
