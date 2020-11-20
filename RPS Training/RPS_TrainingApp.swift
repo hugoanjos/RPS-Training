@@ -11,10 +11,7 @@ import SwiftUI
 struct RPS_TrainingApp: App {
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                Color.black
-                ContentView()
-            }
+            ContentView()
         }
     }
 }

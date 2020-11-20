@@ -35,7 +35,7 @@ struct ContentView: View {
                 .font(.largeTitle)
             }
             .font(.title)
-            .foregroundColor(.white)
+            .foregroundColor(.primary)
             
             HStack(spacing:10) {
                 ForEach(0 ..< 3) { number in
@@ -43,7 +43,7 @@ struct ContentView: View {
                         // botão
                     }) {
                         Text(self.moves[number])
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .font(.largeTitle)
                     }
                 }
@@ -55,9 +55,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            Color.black.ignoresSafeArea(.all)
-            ContentView()
-        }
+        ContentView()
     }
 }
