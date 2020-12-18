@@ -46,6 +46,7 @@ struct ContentView: View {
             .font(.title)
             .foregroundColor(.primary)
             
+            // Moves
             HStack(spacing:10) {
                 ForEach(0 ..< 3) { number in
                     Button(action: {
@@ -59,6 +60,7 @@ struct ContentView: View {
             }
         }
         
+        // Game over alert
         .alert(isPresented: $gameEnd) {
                         Alert(title: Text(scoreTitle), message: Text("Your score was \(score)"), dismissButton: .default(Text("Try Again")) {
                             self.restartGame()
@@ -66,28 +68,34 @@ struct ContentView: View {
                     }
     }
     
+    // Gives a new move and win condition
     func newMove() {
         currentMove = Int.random(in: 0...2)
         winCondition = Bool.random()
     }
     
+    // Called after pressing Try Again when game ends
     func restartGame() {
         score = 0
         lives = 3
         self.newMove()
     }
     
+    // Checks to see if the answer is correct
     func optionSelected(_ number: Int) {
         var winMove: Int
         
+        // Assigns the right answer to winMove
         if winCondition {
             winMove = (currentMove + 1) % moves.count
         } else {
             winMove = (currentMove - 1) % moves.count
         }
         
+        // If it is the right answer, scores, else, remove life
         number == winMove ? (score += 1) : (lives -= 1)
         
+        // Check to see if the game ended
         if lives > 0 {
             self.newMove()
         } else {
