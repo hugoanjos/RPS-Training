@@ -10,14 +10,23 @@ import SwiftUI
 struct ContentView: View {
     @State private var currentMove = Int.random(in: 0...2)
     @State private var winCondition = Bool.random()
+    @State private var score = 0
+    @State private var lives = 3
     
-    private var moves = ["✊", "✋", "✌️"]
+    @State private var gameEnd = false
+    @State private var scoreTitle = ""
+    
+    @State private var moves = ["✊", "✋", "✌️"]
     
     var body: some View {
         
-        VStack(spacing: 120) {
+        VStack(spacing: 100) {
             VStack(spacing: 50) {
-                Text("Player Score: 0")
+                Text("""
+                    Player Score: \(score)
+                    Lives left: \(lives)
+                    """)
+                    .multilineTextAlignment(.center)
                 
                 VStack {
                     Text("The move is:")
@@ -40,7 +49,7 @@ struct ContentView: View {
             HStack(spacing:10) {
                 ForEach(0 ..< 3) { number in
                     Button(action: {
-                        // botão
+                        self.optionSelected(number)
                     }) {
                         Text(self.moves[number])
                             .foregroundColor(.primary)
@@ -48,6 +57,41 @@ struct ContentView: View {
                     }
                 }
             }
+        }
+        
+        .alert(isPresented: $gameEnd) {
+                        Alert(title: Text(scoreTitle), message: Text("Your score was \(score)"), dismissButton: .default(Text("Try Again")) {
+                            self.restartGame()
+                        })
+                    }
+    }
+    
+    func newMove() {
+        currentMove = Int.random(in: 0...2)
+        winCondition = Bool.random()
+    }
+    
+    func restartGame() {
+        score = 0
+        lives = 3
+        self.newMove()
+    }
+    
+    func optionSelected(_ number: Int) {
+        var winMove: Int
+        
+        if winCondition {
+            winMove = (currentMove + 1) % moves.count
+        } else {
+            winMove = (currentMove - 1) % moves.count
+        }
+        
+        number == winMove ? (score += 1) : (lives -= 1)
+        
+        if lives > 0 {
+            self.newMove()
+        } else {
+            gameEnd = true
         }
     }
     
