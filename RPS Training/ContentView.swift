@@ -18,6 +18,8 @@ struct ContentView: View {
     
     @State private var moves = ["✊", "✋", "✌️"]
     
+    @AppStorage("highscore") var highscore: Int = 0
+    
     var body: some View {
         
         VStack(spacing: 100) {
@@ -62,7 +64,7 @@ struct ContentView: View {
         
         // Game over alert
         .alert(isPresented: $gameEnd) {
-                        Alert(title: Text(scoreTitle), message: Text("Your score was \(score)"), dismissButton: .default(Text("Try Again")) {
+                        Alert(title: Text(scoreTitle), message: Text("High score: \(highscore)"), dismissButton: .default(Text("Try Again")) {
                             self.restartGame()
                         })
                     }
@@ -89,9 +91,9 @@ struct ContentView: View {
         if winCondition {
             winMove = (currentMove + 1) % moves.count
         } else {
-            winMove = (currentMove - 1) % moves.count
+            winMove = (currentMove + 2) % moves.count
         }
-        
+
         // If it is the right answer, scores, else, remove life
         number == winMove ? (score += 1) : (lives -= 1)
         
@@ -99,6 +101,12 @@ struct ContentView: View {
         if lives > 0 {
             self.newMove()
         } else {
+            if score > highscore {
+                highscore = score
+                scoreTitle = "New high score!"
+            } else {
+                scoreTitle = "Your score was \(score)"
+            }
             gameEnd = true
         }
     }
